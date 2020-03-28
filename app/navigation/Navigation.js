@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { MaterialCommunityIcons } from "react-native-vector-icons";
 
-import AccountScreen from "../screens/AccountScreen";
+import AccountScreen from "../screens/account/MyAccountScreen";
 import SaleListScreen from "../screens/SaleListScreen";
 import SaleDetailScreen from "../screens/SaleDetailScreen";
 import SaleMapScreen from "../screens/SaleMapScreen";
@@ -17,7 +17,7 @@ function AccountStackScreen() {
   return (
     <AccountStack.Navigator>
       <AccountStack.Screen
-        name="account"
+        name="my-account"
         component={AccountScreen}
         options={({ route }) => ({
           headerTitle: getHeaderTitle(route)
@@ -66,7 +66,7 @@ export default function Navigation() {
   return (
     <NavigationContainer>
       <Tab.Navigator
-        initialRouteName="Beneficios"
+        initialRouteName="Cuenta"
         tabBarOptions={{
           activeTintColor: "#0288d1",
           inactiveTintColor: "gray"
@@ -115,7 +115,7 @@ function getHeaderTitle(route) {
       return "Detalle {param}";
     case "sale-map":
       return "Mapas --";
-    case "account":
+    case "my-account":
       return "Mi cuenta {param}";
   }
 }
