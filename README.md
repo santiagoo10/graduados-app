@@ -24,3 +24,26 @@ expo install react-native-gesture-handler react-native-reanimated react-native-s
 yarn add @react-navigation/stack
 
 yarn add @react-navigation/bottom-tabs
+
+##Firebase
+
+- creamos un proyecto , vamos a utilizar
+  - Authentication : para manejo de usuarios.
+  - Batabase : para almacen de datos.
+  - Storage : para archivos/imagenes.
+
+* Añadimos una app web
+
+* en el code creamos utils/FireBase.js y agregamos la config
+
+  var firebaseConfig = {
+  apiKey: "AIzaSyCzwJuySBcbP3NfGoxkE2jgKasOUmH6SxY",
+  authDomain: "graduados-a7240.firebaseapp.com",
+  databaseURL: "https://graduados-a7240.firebaseio.com",
+  projectId: "graduados-a7240",
+  storageBucket: "graduados-a7240.appspot.com",
+  messagingSenderId: "714619466530",
+  appId: "1:714619466530:web:34cc5fb2b5dd61c77a6b7b"
+  };
+
+- agregamos paquete de firebase
