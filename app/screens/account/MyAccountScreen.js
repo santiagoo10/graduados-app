@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { View, Text } from "react-native";
 import * as firebase from "firebase";
 import Loading from "../../components/Loading";
+
+import UserGestScreen from "./UserGestScreen";
+import UserLoggedScreen from "./UserLoggedScreen";
 
 export default function MyAccountScreen() {
   const [login, setLogin] = useState(null);
@@ -15,18 +17,5 @@ export default function MyAccountScreen() {
   if (login === null) {
     return <Loading isVisible={true} text="Cargando..."></Loading>;
   }
-
-  if (login) {
-    return (
-      <View>
-        <Text>Usuario logeado!</Text>
-      </View>
-    );
-  }
-
-  return (
-    <View>
-      <Text>Usuario no logeado!</Text>
-    </View>
-  );
+  return login ? <UserLoggedScreen /> : <UserGestScreen />;
 }
