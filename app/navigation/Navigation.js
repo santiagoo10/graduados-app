@@ -5,6 +5,9 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { MaterialCommunityIcons } from "react-native-vector-icons";
 
 import AccountScreen from "../screens/account/MyAccountScreen";
+import LoginScreen from "../screens/account/LoginScreen";
+import RegisterScreen from "../screens/account/RegisterScreen";
+
 import SaleListScreen from "../screens/SaleListScreen";
 import SaleDetailScreen from "../screens/SaleDetailScreen";
 import SaleMapScreen from "../screens/SaleMapScreen";
@@ -19,6 +22,20 @@ function AccountStackScreen() {
       <AccountStack.Screen
         name="my-account"
         component={AccountScreen}
+        options={({ route }) => ({
+          headerTitle: getHeaderTitle(route)
+        })}
+      />
+      <AccountStack.Screen
+        name="login"
+        component={LoginScreen}
+        options={({ route }) => ({
+          headerTitle: getHeaderTitle(route)
+        })}
+      />
+      <AccountStack.Screen
+        name="register"
+        component={RegisterScreen}
         options={({ route }) => ({
           headerTitle: getHeaderTitle(route)
         })}
@@ -117,5 +134,9 @@ function getHeaderTitle(route) {
       return "Mapas --";
     case "my-account":
       return "Mi cuenta {param}";
+    case "login":
+      return "Ingresar";
+    case "register":
+      return "Registro de graduado";
   }
 }

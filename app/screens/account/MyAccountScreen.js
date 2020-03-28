@@ -5,7 +5,7 @@ import Loading from "../../components/Loading";
 import UserGestScreen from "./UserGestScreen";
 import UserLoggedScreen from "./UserLoggedScreen";
 
-export default function MyAccountScreen() {
+export default function MyAccountScreen({ navigation }) {
   const [login, setLogin] = useState(null);
 
   useEffect(() => {
@@ -17,5 +17,9 @@ export default function MyAccountScreen() {
   if (login === null) {
     return <Loading isVisible={true} text="Cargando..."></Loading>;
   }
-  return login ? <UserLoggedScreen /> : <UserGestScreen />;
+  return login ? (
+    <UserLoggedScreen navigation={navigation} />
+  ) : (
+    <UserGestScreen navigation={navigation} />
+  );
 }

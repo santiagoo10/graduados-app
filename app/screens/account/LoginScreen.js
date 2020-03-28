@@ -7,19 +7,36 @@ export default function LoginScreen({ navigation }) {
     <ScrollView>
       <Image
         source={require("../../../assets/logo.png")}
-        style={style.logo}
+        style={styles.logo}
         resizeMode="contain"
       />
-      <View style={style.viewContainer}>
+      <View style={styles.viewContainer}>
         <Text>Form Login...</Text>
-        <Text>Create Account...</Text>
+        <CreateAccount navigation={navigation}></CreateAccount>
       </View>
-      <Divider style={Style.divider}></Divider>
+      <Divider style={styles.divider}></Divider>
+      <View style={styles.viewContainer}>
+        <Text>Login Facebook...</Text>
+      </View>
     </ScrollView>
   );
 }
 
-const style = StyleSheet.create({
+function CreateAccount({ navigation }) {
+  return (
+    <Text style={styles.textRegister}>
+      ¿Aún no tienes una cuenta?{" "}
+      <Text
+        style={styles.buttonRegister}
+        onPress={() => navigation.navigate("register")}
+      >
+        Regístrate
+      </Text>
+    </Text>
+  );
+}
+
+const styles = StyleSheet.create({
   logo: {
     width: "100%",
     height: 150,
@@ -28,6 +45,14 @@ const style = StyleSheet.create({
   viewContainer: {
     marginRight: 40,
     marginLeft: 40
+  },
+  textRegister: {
+    marginTop: 40,
+    marginLeft: 40
+  },
+  buttonRegister: {
+    color: "#00a680",
+    fontWeight: "bold"
   },
   divider: {
     backgroundColor: "#00a680",

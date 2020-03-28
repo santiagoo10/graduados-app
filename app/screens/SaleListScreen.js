@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Button, Text } from "react-native";
 
-export default function SaleList({ navigation }) {
+export default function SaleListScreen({ navigation }) {
   return (
     <View>
       <Text>Lista de beneficios!</Text>
