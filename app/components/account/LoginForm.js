@@ -1,42 +1,39 @@
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { Input, Icon, Button } from "react-native-elements";
+import { Button, Input, Icon } from "react-native-elements";
+import Loading from "../Loading";
 import { validateEmail } from "../../utils/Validation";
 import * as firebase from "firebase";
-import Loading from "../Loading";
 
-export default function RegisterForm(props) {
+export default function LoginForm(props) {
   const [hiddenPassword, setHiddenPassword] = useState(true);
-  const [hiddenRepeatPassword, setHiddenRepeatPassword] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [repeatPassword, setRepeatPassword] = useState("");
-  const [isVisibleLoading, setIsVisibleLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { toastRef, navigation } = props;
 
-  const register = async () => {
-    setIsVisibleLoading(true);
-    if (!email || !password || !repeatPassword) {
+  const login = async () => {
+    setIsLoading(true);
+    if (!email || !password) {
       toastRef.current.show("Todos los campos son obligatorios.");
     } else if (!validateEmail(email)) {
-      toastRef.current.show("El email no es valido.");
-    } else if (password !== repeatPassword) {
-      toastRef.current.show("Las contraseñas no son iguales.");
+      toastRef.current.show("El email no es correcto.");
     } else {
       await firebase
         .auth()
-        .createUserWithEmailAndPassword(email, password)
+        .signInWithEmailAndPassword(email, password)
         .then(() => {
-          console.log("Usuario creado correctamente.");
+          console.log("Login correcto.");
           navigation.navigate("my-account");
         })
-        .catch(() =>
-          toastRef.current.show("Error al crear el usuario, intente nuevamente")
-        );
+        .catch(() => {
+          toastRef.current.show("Email o contraseña incorrectos.");
+        });
     }
-    setIsVisibleLoading(false);
+    setIsLoading(false);
   };
+
   return (
     <View style={styles.formContainer}>
       <Input
@@ -66,28 +63,13 @@ export default function RegisterForm(props) {
           />
         }
       />
-      <Input
-        placeholder="Repetir Contraseña"
-        password={true}
-        secureTextEntry={hiddenRepeatPassword}
-        containerStyle={styles.inputForm}
-        onChange={rp => setRepeatPassword(rp.nativeEvent.text)}
-        rightIcon={
-          <Icon
-            type="material-community"
-            name={hiddenRepeatPassword ? "eye-outline" : "eye-off-outline"}
-            iconStyle={styles.iconRight}
-            onPress={() => setHiddenRepeatPassword(!hiddenRepeatPassword)}
-          />
-        }
-      />
       <Button
-        title="Unirse"
-        containerStyle={styles.buttonContainerRegister}
-        buttonStyle={styles.ButtonRegister}
-        onPress={register}
+        title="Iniciar sesión"
+        containerStyle={styles.buttonContainerLogin}
+        buttonStyle={styles.ButtonLogin}
+        onPress={login}
       />
-      <Loading text="Creando cuenta" isVisible={isVisibleLoading} />
+      <Loading text="Iniciando sesión" isVisible={isLoading} />
     </View>
   );
 }
@@ -106,11 +88,11 @@ const styles = StyleSheet.create({
   iconRight: {
     color: "#c1c1c1"
   },
-  buttonContainerRegister: {
+  buttonContainerLogin: {
     marginTop: 20,
     width: "95%"
   },
-  ButtonRegister: {
+  ButtonLogin: {
     backgroundColor: "#00a680"
   }
 });

@@ -47,3 +47,17 @@ yarn add @react-navigation/bottom-tabs
   };
 
 - agregamos paquete de firebase
+
+## Para que no se oculten cajas de textos al levantar el teclado
+
+yarn add react-native-keyboard-aware-scroll-view
+
+## Para mostrar mensajes toast
+
+yarn add react-native-easy-toast
+
+## Login mediante facebook
+
+- creamos la app en developers.facebook siguiendo la doc de expo para las dos plataformas android - ios
+- habilitamos en firebase login por facebook
+- instalamos el paquete expo-facebook yarn add expo-facebook
