@@ -51,7 +51,8 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   buttonStyle: {
-    backgroundColor: "#00a680"
+    //backgroundColor: "#00a680"
+    backgroundColor: "#319bb4"
   },
   containerStyle: {
     width: "70%"

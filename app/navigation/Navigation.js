@@ -85,7 +85,7 @@ export default function Navigation() {
       <Tab.Navigator
         initialRouteName="Cuenta"
         tabBarOptions={{
-          activeTintColor: "#0288d1",
+          activeTintColor: "#319bb4",
           inactiveTintColor: "gray"
         }}
       >

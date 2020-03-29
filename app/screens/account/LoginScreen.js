@@ -9,9 +9,9 @@ export default function LoginScreen({ navigation }) {
   const toastRef = useRef();
 
   return (
-    <ScrollView>
+    <ScrollView style={styles.container}>
       <Image
-        source={require("../../../assets/logo.png")}
+        source={require("../../../assets/logo-unl-3.png")}
         style={styles.logo}
         resizeMode="contain"
       />
@@ -43,6 +43,9 @@ function CreateAccount({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "white"
+  },
   logo: {
     width: "100%",
     height: 150,
@@ -57,11 +60,13 @@ const styles = StyleSheet.create({
     marginLeft: 40
   },
   buttonRegister: {
-    color: "#00a680",
+    //color: "#00a680",
+    color: "#319bb4",
     fontWeight: "bold"
   },
   divider: {
-    backgroundColor: "#00a680",
+    //backgroundColor: "#00a680",
+    backgroundColor: "#319bb4",
     margin: 40
   }
 });
