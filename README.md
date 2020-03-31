@@ -61,3 +61,8 @@ yarn add react-native-easy-toast
 - creamos la app en developers.facebook siguiendo la doc de expo para las dos plataformas android - ios
 - habilitamos en firebase login por facebook
 - instalamos el paquete expo-facebook yarn add expo-facebook
+
+## Trabajo con camara
+
+- instalamos expo install expo-permissions
+- instalamos expo install expo-image-picker
