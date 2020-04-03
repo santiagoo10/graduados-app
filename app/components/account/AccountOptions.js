@@ -2,12 +2,47 @@ import React, { useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { ListItem } from "react-native-elements";
 import Modal from "../Modal";
+import ChangeDisplayNameForm from "../account/ChangeDisplayNameForm";
+import ChangeEmailForm from "../account/ChangeEmailForm";
+import ChangePasswordForm from "../account/ChangePasswordForm";
 
-export default function AccountOptions() {
+export default function AccountOptions(props) {
+  const { userInfo, setReloadData, toastRef } = props;
   const [isVisibleModal, setIsVisibleModal] = useState(false);
+  const [renderComponent, setRenderComponent] = useState(null);
 
-  const selectedComponent = () => {
-    setIsVisibleModal(true);
+  const selectedComponent = key => {
+    switch (key) {
+      case "display-name":
+        setRenderComponent(
+          <ChangeDisplayNameForm
+            displayName={userInfo.displayName}
+            setIsVisibleModal={setIsVisibleModal}
+            setReloadData={setReloadData}
+            toastRef={toastRef}
+          />
+        );
+        setIsVisibleModal(true);
+        break;
+      case "email":
+        setRenderComponent(
+          <ChangeEmailForm
+            email={userInfo.email}
+            setIsVisibleModal={setIsVisibleModal}
+            setReloadData={setReloadData}
+            toastRef={toastRef}
+          />
+        );
+        setIsVisibleModal(true);
+        break;
+      case "password":
+        setRenderComponent(<ChangePasswordForm />);
+        setIsVisibleModal(true);
+        break;
+
+      default:
+        break;
+    }
   };
 
   const menuOptions = [
@@ -18,7 +53,7 @@ export default function AccountOptions() {
       iconColorLeft: "#ccc",
       iconNameRight: "chevron-right",
       iconColorRight: "#ccc",
-      onPress: () => selectedComponent()
+      onPress: () => selectedComponent("display-name")
     },
     {
       title: "Cambiar Email",
@@ -27,7 +62,7 @@ export default function AccountOptions() {
       iconColorLeft: "#ccc",
       iconNameRight: "chevron-right",
       iconColorRight: "#ccc",
-      onPress: () => console.log("change display email")
+      onPress: () => selectedComponent("email")
     },
     {
       title: "Cambiar Contraseña",
@@ -36,7 +71,7 @@ export default function AccountOptions() {
       iconColorLeft: "#ccc",
       iconNameRight: "chevron-right",
       iconColorRight: "#ccc",
-      onPress: () => console.log("change display password")
+      onPress: () => selectedComponent("password")
     }
   ];
 
@@ -60,11 +95,11 @@ export default function AccountOptions() {
           containerStyle={styles.menuItem}
         />
       ))}
-      <Modal isVisible={isVisibleModal} setIsVisible={setIsVisibleModal}>
-        <View>
-          <Text>Estoy dentro del modal</Text>
-        </View>
-      </Modal>
+      {renderComponent && (
+        <Modal isVisible={isVisibleModal} setIsVisible={setIsVisibleModal}>
+          {renderComponent}
+        </Modal>
+      )}
     </View>
   );
 }
