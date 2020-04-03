@@ -129,11 +129,11 @@ function getHeaderTitle(route) {
     case "sale-list":
       return "Beneficios --";
     case "sale-detail":
-      return "Detalle {param}";
+      return "Detalle";
     case "sale-map":
       return "Mapas --";
     case "my-account":
-      return "Mi cuenta {param}";
+      return "Mi cuenta";
     case "login":
       return "Ingresar";
     case "register":

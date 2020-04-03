@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { ListItem } from "react-native-elements";
+import Modal from "../Modal";
 
 export default function AccountOptions() {
+  const [isVisibleModal, setIsVisibleModal] = useState(false);
+
+  const selectedComponent = () => {
+    setIsVisibleModal(true);
+  };
+
   const menuOptions = [
     {
       title: "Cambiar Nombre y Apellidos",
@@ -11,7 +18,7 @@ export default function AccountOptions() {
       iconColorLeft: "#ccc",
       iconNameRight: "chevron-right",
       iconColorRight: "#ccc",
-      onPress: () => console.log("change display name")
+      onPress: () => selectedComponent()
     },
     {
       title: "Cambiar Email",
@@ -53,6 +60,11 @@ export default function AccountOptions() {
           containerStyle={styles.menuItem}
         />
       ))}
+      <Modal isVisible={isVisibleModal} setIsVisible={setIsVisibleModal}>
+        <View>
+          <Text>Estoy dentro del modal</Text>
+        </View>
+      </Modal>
     </View>
   );
 }
