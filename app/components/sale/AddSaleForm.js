@@ -9,10 +9,18 @@ const widthScreen = Dimensions.get("window").width;
 export default function AddSaleForm(props) {
   const { navigation, toastRef, setIsLoading } = props;
   const [imagesSelected, setImagesSelected] = useState([]);
+  const [saleName, setSaleName] = useState("");
+  const [saleAddress, setSaleAddress] = useState("");
+  const [saleDescription, setSaleDescription] = useState("");
 
   return (
     <ScrollView>
       <ImageSale imageSale={imagesSelected[0]} />
+      <FormAdd
+        setSaleName={setSaleName}
+        setSaleAddress={setSaleAddress}
+        setSaleDescription={setSaleDescription}
+      />
       <UploadImagen
         imagesSelected={imagesSelected}
         setImagesSelected={setImagesSelected}
@@ -118,6 +126,37 @@ function UploadImagen(props) {
   );
 }
 
+function FormAdd(props) {
+  const { setSaleName, setSaleAddress, setSaleDescription } = props;
+
+  return (
+    <View style={styles.viewForm}>
+      <Input
+        placeholder="Nombre de la oferta"
+        containerStyle={styles.input}
+        onChange={e => setSaleName(e.nativeEvent.text)}
+      />
+      <Input
+        placeholder="Dirección"
+        containerStyle={styles.input}
+        onChange={e => setSaleAddress(e.nativeEvent.text)}
+        rightIcon={{
+          type: "material-community",
+          name: "google-maps",
+          color: "#c2c2c2",
+          onPress: () => console.log("seleccione la ubicación")
+        }}
+      />
+      <Input
+        placeholder="Descripcion de la oferta"
+        multiline={true}
+        inputContainerStyle={styles.textArea}
+        onChange={e => setSaleDescription(e.nativeEvent.text)}
+      />
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
   viewPhoto: {
     alignItems: "center",
@@ -142,5 +181,18 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     marginRight: 10
+  },
+  viewForm: {
+    marginLeft: 10,
+    marginRight: 10
+  },
+  input: {
+    marginBottom: 10
+  },
+  textArea: {
+    height: 100,
+    width: "100%",
+    padding: 0,
+    margin: 0
   }
 });
