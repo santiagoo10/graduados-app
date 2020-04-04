@@ -67,6 +67,15 @@ yarn add react-native-easy-toast
 - instalamos expo install expo-permissions
 - instalamos expo install expo-image-picker
 
-## Componente de botones
+## Componente de botones +
 
 - yarn add react-native-action-button
+
+## Componente de mapas MapVew (expo)
+
+- expo install react-native-maps
+  https://docs.expo.io/versions/latest/sdk/map-view/
+
+## Instalar componente locations para obtener geo-position
+
+- expo install expo-location

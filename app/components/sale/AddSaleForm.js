@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, ScrollView, Alert, Dimensions } from "react-native";
 import { Icon, Avatar, Image, Input, Button } from "react-native-elements";
+import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
+import MapView from "react-native-maps";
+import Modal from "../Modal";
 
 const widthScreen = Dimensions.get("window").width;
 
@@ -12,7 +15,8 @@ export default function AddSaleForm(props) {
   const [saleName, setSaleName] = useState("");
   const [saleAddress, setSaleAddress] = useState("");
   const [saleDescription, setSaleDescription] = useState("");
-
+  const [isVisibleMap, setIsVisibleMap] = useState(false);
+  const [locationSale, setLocationSale] = useState(null);
   return (
     <ScrollView>
       <ImageSale imageSale={imagesSelected[0]} />
@@ -20,10 +24,18 @@ export default function AddSaleForm(props) {
         setSaleName={setSaleName}
         setSaleAddress={setSaleAddress}
         setSaleDescription={setSaleDescription}
+        setIsVisibleMap={setIsVisibleMap}
+        locationSale={locationSale}
       />
       <UploadImagen
         imagesSelected={imagesSelected}
         setImagesSelected={setImagesSelected}
+        toastRef={toastRef}
+      />
+      <Map
+        isVisibleMap={isVisibleMap}
+        setIsVisibleMap={setIsVisibleMap}
+        setLocationSale={setLocationSale}
         toastRef={toastRef}
       />
     </ScrollView>
@@ -32,7 +44,6 @@ export default function AddSaleForm(props) {
 
 function ImageSale(props) {
   const { imageSale } = props;
-  console.log(imageSale);
   return (
     <View style={styles.viewPhoto}>
       {imageSale ? (
@@ -68,7 +79,7 @@ function UploadImagen(props) {
     } else {
       const result = await ImagePicker.launchImageLibraryAsync({
         allowsEditing: true,
-        aspect: [4, 3]
+        aspect: [4, 3],
       });
 
       if (result.cancelled) {
@@ -82,22 +93,22 @@ function UploadImagen(props) {
     }
   };
 
-  const removeImage = image => {
+  const removeImage = (image) => {
     Alert.alert(
       "Eliminar imágen",
       "¿Estas seguro de que quieres eliminar la imágen?",
       [
         {
           text: "Cancelar",
-          style: "cancel"
+          style: "cancel",
         },
         {
           text: "Eliminar",
           onPress: () =>
             setImagesSelected(
-              imagesSelected.filter(imageUrl => imageUrl !== image)
-            )
-        }
+              imagesSelected.filter((imageUrl) => imageUrl !== image)
+            ),
+        },
       ],
       { cancelable: false }
     );
@@ -127,33 +138,112 @@ function UploadImagen(props) {
 }
 
 function FormAdd(props) {
-  const { setSaleName, setSaleAddress, setSaleDescription } = props;
+  const {
+    setSaleName,
+    setSaleAddress,
+    setSaleDescription,
+    setIsVisibleMap,
+    locationSale,
+  } = props;
 
   return (
     <View style={styles.viewForm}>
       <Input
         placeholder="Nombre de la oferta"
         containerStyle={styles.input}
-        onChange={e => setSaleName(e.nativeEvent.text)}
+        onChange={(e) => setSaleName(e.nativeEvent.text)}
       />
       <Input
         placeholder="Dirección"
         containerStyle={styles.input}
-        onChange={e => setSaleAddress(e.nativeEvent.text)}
+        onChange={(e) => setSaleAddress(e.nativeEvent.text)}
         rightIcon={{
           type: "material-community",
           name: "google-maps",
-          color: "#c2c2c2",
-          onPress: () => console.log("seleccione la ubicación")
+          color: locationSale ? "#319bb4" : "#c2c2c2",
+          onPress: () => setIsVisibleMap(true),
         }}
       />
       <Input
         placeholder="Descripcion de la oferta"
         multiline={true}
         inputContainerStyle={styles.textArea}
-        onChange={e => setSaleDescription(e.nativeEvent.text)}
+        onChange={(e) => setSaleDescription(e.nativeEvent.text)}
       />
     </View>
+  );
+}
+
+function Map(props) {
+  const { isVisibleMap, setIsVisibleMap, setLocationSale, toastRef } = props;
+  const [location, setLocation] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      const resultPermission = await Permissions.askAsync(Permissions.LOCATION);
+
+      statusPermission = resultPermission.permissions.location.status;
+      if (statusPermission !== "granted") {
+        toastRef.current.show(
+          "Tienes que aceptar los permisos de localización, para crear una oferta.",
+          5000
+        );
+      } else {
+        let loc = await Location.getCurrentPositionAsync({});
+
+        setLocation({
+          latitude: loc.coords.latitude,
+          longitude: loc.coords.longitude,
+          latitudeDelta: 0.001,
+          longitudeDelta: 0.001,
+        });
+      }
+    })();
+  }, []);
+
+  const confirmLocation = () => {
+    setLocationSale(location);
+    toastRef.current.show("Localización guardada correctamente.");
+    setIsVisibleMap(false);
+  };
+
+  return (
+    <Modal isVisible={isVisibleMap} setIsVisible={setIsVisibleMap}>
+      <View>
+        {location && (
+          <MapView
+            style={styles.map}
+            initialRegion={location}
+            showsUserLocation={true}
+            onRegionChange={(region) => {
+              setLocation(region);
+            }}
+          >
+            <MapView.Marker
+              coordinate={{
+                latitude: location.latitude,
+                longitude: location.longitude,
+              }}
+              draggable
+            />
+          </MapView>
+        )}
+        <View style={styles.mapButton}>
+          <Button
+            title="Guardar Ubicación"
+            onPress={confirmLocation}
+            containerStyle={styles.mapButtonSaveContainer}
+            buttonStyle={styles.mapButtonSave}
+          />
+          <Button
+            title="Cancelar Ubicación"
+            onPress={() => setIsVisibleMap(false)}
+            containerStyle={styles.mapButtonCancelContainer}
+            buttonStyle={styles.mapButtonCancel}
+          />
+        </View>
+      </View>
+    </Modal>
   );
 }
 
@@ -161,13 +251,13 @@ const styles = StyleSheet.create({
   viewPhoto: {
     alignItems: "center",
     height: 200,
-    marginBottom: 20
+    marginBottom: 20,
   },
   viewImages: {
     flexDirection: "row",
     marginLeft: 20,
     marginRight: 20,
-    marginTop: 30
+    marginTop: 30,
   },
   containerIcon: {
     alignItems: "center",
@@ -175,24 +265,45 @@ const styles = StyleSheet.create({
     marginRight: 10,
     height: 70,
     width: 70,
-    backgroundColor: "#e3e3e3"
+    backgroundColor: "#e3e3e3",
   },
   miniature: {
     width: 70,
     height: 70,
-    marginRight: 10
+    marginRight: 10,
   },
   viewForm: {
     marginLeft: 10,
-    marginRight: 10
+    marginRight: 10,
   },
   input: {
-    marginBottom: 10
+    marginBottom: 10,
   },
   textArea: {
     height: 100,
     width: "100%",
     padding: 0,
-    margin: 0
-  }
+    margin: 0,
+  },
+  map: {
+    width: "100%",
+    height: 550,
+  },
+  mapButton: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 10,
+  },
+  mapButtonSaveContainer: {
+    paddingRight: 5,
+  },
+  mapButtonSave: {
+    backgroundColor: "#319bb4",
+  },
+  mapButtonCancelContainer: {
+    paddingLeft: 5,
+  },
+  mapButtonCancel: {
+    backgroundColor: "#a60d0d",
+  },
 });
