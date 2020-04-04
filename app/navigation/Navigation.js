@@ -8,9 +8,10 @@ import AccountScreen from "../screens/account/MyAccountScreen";
 import LoginScreen from "../screens/account/LoginScreen";
 import RegisterScreen from "../screens/account/RegisterScreen";
 
-import SaleListScreen from "../screens/SaleListScreen";
-import SaleDetailScreen from "../screens/SaleDetailScreen";
-import SaleMapScreen from "../screens/SaleMapScreen";
+import SaleListScreen from "../screens/sale/SaleListScreen";
+import SaleAddScreen from "../screens/sale/SaleAddScreen";
+import SaleDetailScreen from "../screens/sale/SaleDetailScreen";
+import SaleMapScreen from "../screens/sale/SaleMapScreen";
 
 const Tab = createBottomTabNavigator();
 const AccountStack = createStackNavigator();
@@ -55,6 +56,13 @@ function SaleListStackScreen() {
         })}
       />
       <SaleStack.Screen
+        name="sale-add"
+        component={SaleAddScreen}
+        options={({ route }) => ({
+          headerTitle: getHeaderTitle(route)
+        })}
+      />
+      <SaleStack.Screen
         name="sale-detail"
         component={SaleDetailScreen}
         options={({ route }) => ({
@@ -83,7 +91,7 @@ export default function Navigation() {
   return (
     <NavigationContainer>
       <Tab.Navigator
-        initialRouteName="Cuenta"
+        initialRouteName="Beneficios"
         tabBarOptions={{
           activeTintColor: "#319bb4",
           inactiveTintColor: "gray"
@@ -127,11 +135,13 @@ export default function Navigation() {
 function getHeaderTitle(route) {
   switch (route.name) {
     case "sale-list":
-      return "Beneficios --";
+      return "Beneficios";
+    case "sale-add":
+      return "Agregar";
     case "sale-detail":
       return "Detalle";
     case "sale-map":
-      return "Mapas --";
+      return "Mapas";
     case "my-account":
       return "Mi cuenta";
     case "login":

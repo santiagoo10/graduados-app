@@ -66,3 +66,7 @@ yarn add react-native-easy-toast
 
 - instalamos expo install expo-permissions
 - instalamos expo install expo-image-picker
+
+## Componente de botones
+
+- yarn add react-native-action-button
