@@ -10,7 +10,6 @@ export default function SaleAddScreen(props) {
   const [isLoading, setIsLoading] = useState(false);
   return (
     <View>
-      <Text>Sale ADD</Text>
       <AddSaleForm
         toastRef={toastRef}
         setIsLoading={setIsLoading}
