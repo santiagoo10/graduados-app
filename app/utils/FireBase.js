@@ -7,7 +7,7 @@ const firebaseConfig = {
   projectId: "graduados-a7240",
   storageBucket: "graduados-a7240.appspot.com",
   messagingSenderId: "714619466530",
-  appId: "1:714619466530:web:34cc5fb2b5dd61c77a6b7b"
+  appId: "1:714619466530:web:34cc5fb2b5dd61c77a6b7b",
 };
 
 export const firebaseApp = firebase.initializeApp(firebaseConfig);

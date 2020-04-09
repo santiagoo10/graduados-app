@@ -79,3 +79,7 @@ yarn add react-native-easy-toast
 ## Instalar componente locations para obtener geo-position
 
 - expo install expo-location
+
+## Instalar uuid para la generacion de ids
+
+- yarn add uuid

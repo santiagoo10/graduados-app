@@ -7,6 +7,13 @@ import * as ImagePicker from "expo-image-picker";
 import MapView from "react-native-maps";
 import Modal from "../Modal";
 
+import { firebaseApp } from "../../utils/FireBase";
+import firebase from "firebase/app";
+import "firebase/firestore";
+
+import { uuidv4 } from "../../utils/uuid";
+const db = firebase.firestore(firebaseApp);
+
 const widthScreen = Dimensions.get("window").width;
 
 export default function AddSaleForm(props) {
@@ -17,6 +24,62 @@ export default function AddSaleForm(props) {
   const [saleDescription, setSaleDescription] = useState("");
   const [isVisibleMap, setIsVisibleMap] = useState(false);
   const [locationSale, setLocationSale] = useState(null);
+
+  const addSale = () => {
+    if (!saleName || !saleAddress || !saleDescription) {
+      toastRef.current.show(
+        "Todos los campos del formulario son obligatorios",
+        3000
+      );
+    } else if (imagesSelected.length === 0) {
+      toastRef.current.show("La oferta debe tener al menos una imagen", 3000);
+    } else if (!locationSale) {
+      toastRef.current.show("Debes localizar la oferta en el mapa", 3000);
+    } else {
+      setIsLoading(true);
+      uploadImageStorage(imagesSelected).then((arrayImages) => {
+        db.collection("sales")
+          .add({
+            name: saleName,
+            address: saleAddress,
+            description: saleDescription,
+            location: locationSale,
+            images: arrayImages,
+            createAt: new Date(),
+            createBy: firebaseApp.auth().currentUser.uid,
+          })
+          .then(() => {
+            setIsLoading(false);
+            navigation.navigate("sale-list");
+          })
+          .catch((err) => {
+            setIsLoading(false);
+            toastRef.current.show("Error al subir la oferta");
+          });
+      });
+    }
+  };
+
+  //recorre todas las imagenes y las sube a firebase, retorna los nombres de las imagenes
+  const uploadImageStorage = async (imageArray) => {
+    const imagesBlob = [];
+    await Promise.all(
+      imageArray.map(async (image) => {
+        const response = await fetch(image);
+        const blob = await response.blob();
+        const uuid = uuidv4();
+        const ref = firebase.storage().ref("sale-images").child(uuid);
+        await ref
+          .put(blob)
+          .then((result) => {
+            imagesBlob.push(result.metadata.name);
+          })
+          .catch((e) => console.log("error put: ", e));
+      })
+    );
+    return imagesBlob;
+  };
+
   return (
     <ScrollView>
       <ImageSale imageSale={imagesSelected[0]} />
@@ -31,6 +94,11 @@ export default function AddSaleForm(props) {
         imagesSelected={imagesSelected}
         setImagesSelected={setImagesSelected}
         toastRef={toastRef}
+      />
+      <Button
+        title="Crear oferta"
+        onPress={addSale}
+        buttonStyle={styles.buttonAdd}
       />
       <Map
         isVisibleMap={isVisibleMap}
@@ -305,5 +373,9 @@ const styles = StyleSheet.create({
   },
   mapButtonCancel: {
     backgroundColor: "#a60d0d",
+  },
+  buttonAdd: {
+    backgroundColor: "#319bb4",
+    margin: 20,
   },
 });
