@@ -17,7 +17,7 @@ const db = firebase.firestore(firebaseApp);
 const widthScreen = Dimensions.get("window").width;
 
 export default function AddSaleForm(props) {
-  const { navigation, toastRef, setIsLoading } = props;
+  const { navigation, toastRef, setIsLoading, setIsReloadSales } = props;
   const [imagesSelected, setImagesSelected] = useState([]);
   const [saleName, setSaleName] = useState("");
   const [saleAddress, setSaleAddress] = useState("");
@@ -50,6 +50,7 @@ export default function AddSaleForm(props) {
           })
           .then(() => {
             setIsLoading(false);
+            setIsReloadSales(true);
             navigation.navigate("sale-list");
           })
           .catch((err) => {

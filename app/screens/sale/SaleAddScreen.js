@@ -5,7 +5,9 @@ import Loading from "../../components/Loading";
 import AddSaleForm from "../../components/sale/AddSaleForm";
 
 export default function SaleAddScreen(props) {
-  const { navigation } = props;
+  const { navigation, route } = props;
+  const { setIsReloadSales } = route.params;
+
   const toastRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
   return (
@@ -14,6 +16,7 @@ export default function SaleAddScreen(props) {
         toastRef={toastRef}
         setIsLoading={setIsLoading}
         navigation={navigation}
+        setIsReloadSales={setIsReloadSales}
       />
       <Toast ref={toastRef} position="center" opacity={0.5} />
       <Loading isVisible={isLoading} text="Creando beneficio" />

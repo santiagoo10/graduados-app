@@ -1,42 +1,123 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Button, Text } from "react-native";
 import ActionButton from "react-native-action-button";
-import * as firebase from "firebase";
+import ListSales from "../../components/sale/ListSales";
+import { firebaseApp } from "../../utils/FireBase";
+import firebase from "firebase/app";
+import "firebase/firestore";
+const db = firebase.firestore(firebaseApp);
+
 export default function SaleListScreen(props) {
   const { navigation } = props;
   const [user, setUser] = useState(null);
+  const [sales, setSales] = useState([]);
+  const [startSale, setStartSale] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isReloadSales, setIsReloadSales] = useState(false);
+  const [totalSales, setTotalSales] = useState(0);
+  const limitSales = 5;
 
+  //verifica si esta logeado
   useEffect(() => {
-    firebase.auth().onAuthStateChanged(userInfo => {
+    firebase.auth().onAuthStateChanged((userInfo) => {
       setUser(userInfo);
     });
   }, []);
 
+  //recupera los datos de ofertas
+  useEffect(() => {
+    db.collection("sales")
+      .get()
+      .then((snap) => {
+        setTotalSales(snap.size);
+
+        (async () => {
+          const resultSales = [];
+          const salesDB = db
+            .collection("sales")
+            .orderBy("createAt", "desc")
+            .limit(limitSales);
+
+          await salesDB
+            .get()
+            .then((response) => {
+              if (response.docs.length > 0) {
+                const start = response.docs[response.docs.length - 1];
+                setStartSale(start.data().createAt);
+              }
+
+              response.forEach((doc) => {
+                let sale = doc.data();
+                sale.id = doc.id;
+                resultSales.push({ sale });
+              });
+              setSales(resultSales);
+            })
+            .catch((e) => console.log("ERROR: ", e));
+        })();
+      });
+    setIsReloadSales(false);
+  }, [isReloadSales]);
+
+  const handleLoadMore = async () => {
+    const resultSales = [];
+    sales.length < totalSales && setIsLoading(true);
+    const salesDB = db
+      .collection("sales")
+      .orderBy("createAt", "desc")
+      .startAfter(startSale)
+      .limit(limitSales);
+
+    await salesDB
+      .get()
+      .then((response) => {
+        if (response.docs.length > 0) {
+          const start = response.docs[response.docs.length - 1];
+          setStartSale(start.data().createAt);
+        } else {
+          setIsLoading(false);
+        }
+        response.forEach((doc) => {
+          let sale = doc.data();
+          sale.id = doc.id;
+          resultSales.push({ sale });
+        });
+        //le agrego los nuevos resultados
+        setSales([...sales, ...resultSales]);
+      })
+      .catch((e) => console.log("ERROR: ", e));
+  };
+
   return (
     <View style={styles.viewBody}>
-      <Text>Lista de beneficios!</Text>
-      <Button
-        title="Go to Details"
-        onPress={() => navigation.navigate("sale-detail")}
-      />
+      <ListSales
+        sales={sales}
+        isLoading={isLoading}
+        handleLoadMore={handleLoadMore}
+      ></ListSales>
 
-      {user && <AddSaleButton navigation={navigation} />}
+      {user && (
+        <AddSaleButton
+          navigation={navigation}
+          setIsReloadSales={setIsReloadSales}
+        />
+      )}
     </View>
   );
 }
 
 function AddSaleButton(props) {
-  const { navigation } = props;
+  const { navigation, setIsReloadSales } = props;
   return (
     <ActionButton
       buttonColor="#319bb4"
-      onPress={() => navigation.navigate("sale-add")}
+      onPress={() => navigation.navigate("sale-add", { setIsReloadSales })}
     />
   );
 }
 
 const styles = StyleSheet.create({
   viewBody: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });
