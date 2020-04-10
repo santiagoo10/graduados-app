@@ -106,7 +106,6 @@ function InfoSale(props) {
           containerStyle={{
             backgroundColor: "transparent",
             justifyContent: "center",
-            paddingTop: 0,
           }}
         />
       ))}
