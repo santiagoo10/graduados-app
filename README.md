@@ -80,6 +80,10 @@ yarn add react-native-easy-toast
 
 - expo install expo-location
 
-## Instalar uuid para la generacion de ids
+## Instalar uuid para la generacion de ids (no funciono)
 
 - yarn add uuid
+
+## componente para carousel de imagenes
+
+- yarn add react-native-banner-carousel
