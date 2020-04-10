@@ -11,13 +11,13 @@ import { Image } from "react-native-elements";
 import * as firebase from "firebase";
 
 export default function ListSales(props) {
-  const { sales, isLoading, handleLoadMore } = props;
+  const { sales, isLoading, handleLoadMore, navigation } = props;
   return (
     <View>
       {sales ? (
         <FlatList
           data={sales}
-          renderItem={(sale) => <Sale sale={sale} />}
+          renderItem={(sale) => <Sale sale={sale} navigation={navigation} />}
           keyExtractor={(item, index) => index.toString()}
           onEndReached={handleLoadMore}
           onEndReachedThreshold={0} // cdo llega al final pide los proximos 8
@@ -34,7 +34,7 @@ export default function ListSales(props) {
 }
 
 function Sale(props) {
-  const { sale } = props;
+  const { sale, navigation } = props;
   const { name, address, description, images } = sale.item.sale;
   const [imageSale, setImageSale] = useState(null);
 
@@ -51,7 +51,7 @@ function Sale(props) {
   });
 
   return (
-    <TouchableOpacity onPress={() => console.log("ir al sale")}>
+    <TouchableOpacity onPress={() => navigation.navigate("sale-detail", sale)}>
       <View style={styles.viewSale}>
         <View style={styles.viewSaleImage}>
           <Image

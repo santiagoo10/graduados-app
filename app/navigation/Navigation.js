@@ -24,21 +24,21 @@ function AccountStackScreen() {
         name="my-account"
         component={AccountScreen}
         options={({ route }) => ({
-          headerTitle: getHeaderTitle(route)
+          headerTitle: getHeaderTitle(route),
         })}
       />
       <AccountStack.Screen
         name="login"
         component={LoginScreen}
         options={({ route }) => ({
-          headerTitle: getHeaderTitle(route)
+          headerTitle: getHeaderTitle(route),
         })}
       />
       <AccountStack.Screen
         name="register"
         component={RegisterScreen}
         options={({ route }) => ({
-          headerTitle: getHeaderTitle(route)
+          headerTitle: getHeaderTitle(route),
         })}
       />
     </AccountStack.Navigator>
@@ -52,21 +52,21 @@ function SaleListStackScreen() {
         name="sale-list"
         component={SaleListScreen}
         options={({ route }) => ({
-          headerTitle: getHeaderTitle(route)
+          headerTitle: getHeaderTitle(route),
         })}
       />
       <SaleStack.Screen
         name="sale-add"
         component={SaleAddScreen}
         options={({ route }) => ({
-          headerTitle: getHeaderTitle(route)
+          headerTitle: getHeaderTitle(route),
         })}
       />
       <SaleStack.Screen
         name="sale-detail"
         component={SaleDetailScreen}
         options={({ route }) => ({
-          headerTitle: getHeaderTitle(route)
+          headerTitle: getHeaderTitle(route),
         })}
       />
     </SaleStack.Navigator>
@@ -80,7 +80,7 @@ function SaleMapStackScreen() {
         name="sale-map"
         component={SaleMapScreen}
         options={({ route }) => ({
-          headerTitle: getHeaderTitle(route)
+          headerTitle: getHeaderTitle(route),
         })}
       />
     </SaleStack.Navigator>
@@ -94,7 +94,7 @@ export default function Navigation() {
         initialRouteName="Beneficios"
         tabBarOptions={{
           activeTintColor: "#319bb4",
-          inactiveTintColor: "gray"
+          inactiveTintColor: "gray",
         }}
       >
         <Tab.Screen
@@ -103,7 +103,7 @@ export default function Navigation() {
           options={{
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons name="home" color={color} size={size} />
-            )
+            ),
           }}
         />
         <Tab.Screen
@@ -112,7 +112,7 @@ export default function Navigation() {
           options={{
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons name="map" color={color} size={size} />
-            )
+            ),
           }}
         />
         <Tab.Screen
@@ -125,7 +125,7 @@ export default function Navigation() {
                 color={color}
                 size={size}
               />
-            )
+            ),
           }}
         />
       </Tab.Navigator>
@@ -139,7 +139,8 @@ function getHeaderTitle(route) {
     case "sale-add":
       return "Agregar";
     case "sale-detail":
-      return "Detalle";
+      const titleSale = route.params.item.sale.name;
+      return titleSale ? titleSale : "";
     case "sale-map":
       return "Mapas";
     case "my-account":

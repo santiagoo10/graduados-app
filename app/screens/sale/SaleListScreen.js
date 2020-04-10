@@ -94,6 +94,7 @@ export default function SaleListScreen(props) {
         sales={sales}
         isLoading={isLoading}
         handleLoadMore={handleLoadMore}
+        navigation={navigation}
       ></ListSales>
 
       {user && (
