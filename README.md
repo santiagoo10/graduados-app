@@ -87,3 +87,7 @@ yarn add react-native-easy-toast
 ## componente para carousel de imagenes
 
 - yarn add react-native-banner-carousel
+
+## componente para navegar hacia un punto con la app por defecto del movil(maps, goole)
+
+- yarn add react-native-open-maps
