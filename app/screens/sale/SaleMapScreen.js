@@ -78,14 +78,27 @@ function MarkerView(props) {
 
 function MarkerCallout(props) {
   const { sale } = props;
-  //TODO: falta conseguir la imagen real
-  const test_url =
-    "https://firebasestorage.googleapis.com/v0/b/graduados-a7240.appspot.com/o/sale-images%2F58b052f9-1cb7-48fe-822e-6798907341a1?alt=media&token=d5298279-fb3e-43af-881a-406d35119645";
+  const [imageSale, setImageSale] = useState(null);
+
+  useEffect(() => {
+    const image = sale.images[0];
+    firebase
+      .storage()
+      .ref(`sale-images/${image}`)
+      .getDownloadURL()
+      .then((result) => {
+        setImageSale(result);
+      })
+      .catch((e) => console.log("error userEffect: ", e));
+  });
 
   return (
     <Callout style={styles.callout}>
       <View>
-        <Image source={{ uri: test_url }} style={styles.calloutImage} />
+        <Image
+          source={imageSale && { uri: imageSale }}
+          style={styles.calloutImage}
+        />
         <View style={styles.calloutView}>
           <Text style={styles.calloutName}>{sale.name}</Text>
           <Text style={styles.calloutAddress}>{sale.address}</Text>
