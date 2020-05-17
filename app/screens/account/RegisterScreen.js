@@ -8,9 +8,9 @@ export default function RegisterScreen({ navigation }) {
   const toastRef = useRef();
 
   return (
-    <KeyboardAwareScrollView>
+    <KeyboardAwareScrollView style={styles.container}>
       <Image
-        source={require("../../../assets/logo.png")}
+        source={require("../../../assets/logo-unl-3.png")}
         style={styles.logo}
         resizeMode="contain"
       />
@@ -23,13 +23,16 @@ export default function RegisterScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "white",
+  },
   logo: {
     width: "100%",
     height: 150,
-    marginTop: 20
+    marginTop: 20,
   },
   viewForm: {
     marginRight: 40,
-    marginLeft: 40
-  }
+    marginLeft: 40,
+  },
 });
