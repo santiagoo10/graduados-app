@@ -19,6 +19,7 @@ export default function Map(props) {
       style={{ width: "100%", height: height }}
       initialRegion={location}
       onPress={openAppMap}
+      scrollEnabled={false}
     >
       <MapView.Marker
         coordinate={{
