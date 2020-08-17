@@ -1,6 +1,11 @@
-# graduados-app
+# Graduados App
 
 Aplicación de beneficios para graduados de la UNL
+
+## Users
+
+Expo: gmail / 4896257Ex
+Heroku: gmail / 4896257.Hk
 
 ## instalación entorno
 
