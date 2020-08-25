@@ -6,7 +6,7 @@ export default function UserGestScreen({ navigation }) {
   return (
     <ScrollView style={styles.viewBody}>
       <Image
-        source={require("../../../assets/user-gest.jpg")}
+        source={require("../../../assets/logo-unl-4.png")}
         style={styles.image}
         resizeMode="contain"
       />
@@ -28,33 +28,34 @@ export default function UserGestScreen({ navigation }) {
 }
 const styles = StyleSheet.create({
   viewBody: {
-    backgroundColor: "white"
+    backgroundColor: "white",
   },
   image: {
-    height: 300,
-    width: "100%",
+    height: 200,
+    width: "60%",
+    marginHorizontal: 40,
     marginTop: 40,
-    marginBottom: 40
+    marginBottom: 40,
   },
   title: {
     fontWeight: "bold",
     fontSize: 19,
     marginBottom: 10,
-    textAlign: "center"
+    textAlign: "center",
   },
   description: {
     marginBottom: 20,
-    textAlign: "center"
+    textAlign: "center",
   },
   viewBtn: {
     flex: 1,
-    alignItems: "center"
+    alignItems: "center",
   },
   buttonStyle: {
     //backgroundColor: "#00a680"
-    backgroundColor: "#319bb4"
+    backgroundColor: "#319bb4",
   },
   containerStyle: {
-    width: "70%"
-  }
+    width: "70%",
+  },
 });
