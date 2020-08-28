@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Button, Text } from "react-native";
+import { StyleSheet, View } from "react-native";
 import ActionButton from "react-native-action-button";
 import ListSales from "../../components/sale/ListSales";
 import { firebaseApp } from "../../utils/FireBase";

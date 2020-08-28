@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { StyleSheet, ScrollView, Dimensions, View, Text } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import { Image, Icon } from "react-native-elements";
 import MapView, { Marker, Callout } from "react-native-maps";
+import UserNoLogged from "../../components/account/UserNoLoged";
 import { firebaseApp } from "../../utils/FireBase";
 import firebase from "firebase/app";
 import "firebase/firestore";
@@ -12,6 +14,9 @@ const screenWidth = Dimensions.get("window");
 export default function SaleMap(props) {
   const [sales, setSales] = useState([]);
   const { navigation } = props;
+  const [isLoading, setIsLoading] = useState(false);
+  const [userLogged, setUserLogged] = useState(false);
+  const [reloadData, setReloadData] = useState(false);
 
   const centerLocation = {
     latitude: -31.653788758943733,
@@ -20,25 +25,37 @@ export default function SaleMap(props) {
     longitudeDelta: 0.0050000000000331966,
   };
 
-  //recupera los datos de ofertas
-  useEffect(() => {
-    (async () => {
-      const resultSales = [];
-      const salesDB = db.collection("sales");
+  firebase.auth().onAuthStateChanged((user) => {
+    user ? setUserLogged(true) : setUserLogged(false);
+  });
 
-      await salesDB
-        .get()
-        .then((response) => {
-          response.forEach((doc) => {
-            let sale = doc.data();
-            sale.id = doc.id;
-            resultSales.push({ sale });
-          });
-          setSales(resultSales);
-        })
-        .catch((e) => console.log("ERROR: ", e));
-    })();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      if (userLogged) {
+        (async () => {
+          const resultSales = [];
+          const salesDB = db.collection("sales");
+
+          await salesDB
+            .get()
+            .then((response) => {
+              response.forEach((doc) => {
+                let sale = doc.data();
+                sale.id = doc.id;
+                resultSales.push({ sale });
+              });
+              setSales(resultSales);
+            })
+            .catch((e) => console.log("ERROR: ", e));
+        })();
+      }
+      setReloadData(false);
+    }, [userLogged, reloadData])
+  );
+
+  if (!userLogged) {
+    return <UserNoLogged navigation={navigation} />;
+  }
 
   return (
     <ScrollView>
