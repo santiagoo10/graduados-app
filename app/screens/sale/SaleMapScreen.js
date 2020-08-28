@@ -9,8 +9,9 @@ import "firebase/firestore";
 const db = firebase.firestore(firebaseApp);
 const screenWidth = Dimensions.get("window");
 
-export default function SaleMap() {
+export default function SaleMap(props) {
   const [sales, setSales] = useState([]);
+  const { navigation } = props;
 
   const centerLocation = {
     latitude: -31.653788758943733,
@@ -54,7 +55,7 @@ export default function SaleMap() {
             coordinate={sale.location}
           >
             <MarkerView />
-            <MarkerCallout sale={sale} />
+            <MarkerCallout navigation={navigation} sale={sale} />
           </Marker>
         ))}
       </MapView>
@@ -77,7 +78,7 @@ function MarkerView(props) {
 }
 
 function MarkerCallout(props) {
-  const { sale } = props;
+  const { sale, navigation } = props;
   const [imageSale, setImageSale] = useState(null);
 
   useEffect(() => {
@@ -91,9 +92,11 @@ function MarkerCallout(props) {
       })
       .catch((e) => console.log("error userEffect: ", e));
   });
-
   return (
-    <Callout style={styles.callout}>
+    <Callout
+      style={styles.callout}
+      onPress={() => navigation.push("sale-detail", { sale })}
+    >
       <View>
         <Image
           source={imageSale && { uri: imageSale }}

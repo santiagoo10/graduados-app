@@ -16,8 +16,6 @@ export default function SaleListScreen(props) {
   const [isReloadSales, setIsReloadSales] = useState(false);
   const [totalSales, setTotalSales] = useState(0);
   const limitSales = 5;
-
-  //verifica si esta logeado
   useEffect(() => {
     firebase.auth().onAuthStateChanged((userInfo) => {
       setUser(userInfo);

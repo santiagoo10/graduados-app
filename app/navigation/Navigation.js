@@ -16,6 +16,7 @@ import SaleMapScreen from "../screens/sale/SaleMapScreen";
 const Tab = createBottomTabNavigator();
 const AccountStack = createStackNavigator();
 const SaleStack = createStackNavigator();
+const MapStack = createStackNavigator();
 
 function AccountStackScreen() {
   return (
@@ -73,17 +74,24 @@ function SaleListStackScreen() {
   );
 }
 
-function SaleMapStackScreen() {
+function MapStackScreen() {
   return (
-    <SaleStack.Navigator>
-      <SaleStack.Screen
+    <MapStack.Navigator>
+      <MapStack.Screen
         name="sale-map"
         component={SaleMapScreen}
         options={({ route }) => ({
           headerTitle: getHeaderTitle(route),
         })}
       />
-    </SaleStack.Navigator>
+      <MapStack.Screen
+        name="sale-detail"
+        component={SaleDetailScreen}
+        options={({ route }) => ({
+          headerTitle: getHeaderTitle(route),
+        })}
+      />
+    </MapStack.Navigator>
   );
 }
 
@@ -108,7 +116,7 @@ export default function Navigation() {
         />
         <Tab.Screen
           name="Mapa"
-          component={SaleMapStackScreen}
+          component={MapStackScreen}
           options={{
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons name="map" color={color} size={size} />
@@ -139,8 +147,8 @@ function getHeaderTitle(route) {
     case "sale-add":
       return "Agregar";
     case "sale-detail":
-      const titleSale = route.params.item.sale.name;
-      return titleSale ? titleSale : "";
+      const sale = route.params.item ? route.params.item : route.params;
+      return sale.name ? titleSale.name : "";
     case "sale-map":
       return "Mapas";
     case "my-account":

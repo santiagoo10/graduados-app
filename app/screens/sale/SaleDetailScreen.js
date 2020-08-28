@@ -8,8 +8,9 @@ import { Rating, ListItem } from "react-native-elements";
 const screenWidth = Dimensions.get("window").width;
 
 export default function SaleDetail(props) {
-  const { navigation, route } = props;
-  const { sale } = route.params.item;
+  const { route } = props;
+  //desde la lista viene como item, y desde mapa params
+  const { sale } = route.params.item ? route.params.item : route.params;
   const [imagesSale, setImagesSale] = useState([]);
 
   useEffect(() => {
@@ -29,7 +30,6 @@ export default function SaleDetail(props) {
       setImagesSale(arrayUrls);
     })();
   }, []);
-
   return (
     <ScrollView style={styles.viewBody}>
       <CarouselImages
