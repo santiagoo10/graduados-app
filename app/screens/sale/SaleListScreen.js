@@ -5,6 +5,7 @@ import ListSales from "../../components/sale/ListSales";
 import { firebaseApp } from "../../utils/FireBase";
 import firebase from "firebase/app";
 import "firebase/firestore";
+import UserNoLogged from "../../components/account/UserNoLoged";
 const db = firebase.firestore(firebaseApp);
 
 export default function SaleListScreen(props) {
@@ -85,6 +86,10 @@ export default function SaleListScreen(props) {
       })
       .catch((e) => console.log("ERROR: ", e));
   };
+
+  if (!user) {
+    return <UserNoLogged navigation={navigation} />;
+  }
 
   return (
     <View style={styles.viewBody}>

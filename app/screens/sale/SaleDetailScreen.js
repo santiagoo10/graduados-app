@@ -4,14 +4,20 @@ import CarouselImages from "../../components/CarouselImages";
 import Map from "../../components/Map";
 import * as firebase from "firebase";
 import { Rating, ListItem } from "react-native-elements";
+import UserNoLogged from "../../components/account/UserNoLoged";
 
 const screenWidth = Dimensions.get("window").width;
 
 export default function SaleDetail(props) {
-  const { route } = props;
+  const { route, navigation } = props;
   //desde la lista viene como item, y desde mapa params
   const { sale } = route.params.item ? route.params.item : route.params;
   const [imagesSale, setImagesSale] = useState([]);
+  const [userLogged, setUserLogged] = useState(false);
+
+  firebase.auth().onAuthStateChanged((user) => {
+    user ? setUserLogged(true) : setUserLogged(false);
+  });
 
   useEffect(() => {
     const arrayUrls = [];
@@ -30,6 +36,12 @@ export default function SaleDetail(props) {
       setImagesSale(arrayUrls);
     })();
   }, []);
+
+  console.log("userLogged: ", userLogged);
+  if (!userLogged) {
+    return <UserNoLogged navigation={navigation} />;
+  }
+
   return (
     <ScrollView style={styles.viewBody}>
       <CarouselImages
