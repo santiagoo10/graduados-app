@@ -3,7 +3,7 @@ import { ScrollView, View, Text, Dimensions, StyleSheet } from "react-native";
 import CarouselImages from "../../components/CarouselImages";
 import Map from "../../components/Map";
 import * as firebase from "firebase";
-import { Rating, ListItem } from "react-native-elements";
+import { ListItem, Icon } from "react-native-elements";
 import UserNoLogged from "../../components/account/UserNoLoged";
 
 const screenWidth = Dimensions.get("window").width;
@@ -61,17 +61,10 @@ export default function SaleDetail(props) {
 
 function TitleSale(props) {
   const { name, description } = props;
-  const rating = 3;
   return (
     <View style={styles.viewTitle}>
       <View style={{ flexDirection: "row" }}>
         <Text style={styles.nameSale}>{name}</Text>
-        <Rating
-          style={styles.rating}
-          imageSize={20}
-          readonly
-          startingValue={parseFloat(rating)}
-        />
       </View>
       <Text style={styles.descriptionSale}>{description}</Text>
     </View>
@@ -103,7 +96,16 @@ function InfoSale(props) {
 
   return (
     <View style={styles.viewInfo}>
-      <Text style={styles.titleInfo}>Información sobre el beneficio</Text>
+      <View style={styles.viewTitleInline}>
+        <Icon
+          type="material-community"
+          name="store"
+          size={24}
+          iconStyle={{ marginBottom: 18 }}
+        />
+        <Text style={styles.titleInfo}>Información sobre el beneficio</Text>
+      </View>
+
       <Map location={location} name={name} height={100} />
       {listInfo.map((item, index) => (
         <ListItem
@@ -136,10 +138,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
   },
-  rating: {
-    position: "absolute",
-    right: 0,
-  },
   descriptionSale: {
     marginTop: 15,
     color: "grey",
@@ -148,8 +146,14 @@ const styles = StyleSheet.create({
     margin: 10,
     marginTop: 25,
   },
+  viewTitleInline: {
+    paddingHorizontal: 4,
+    flexDirection: "row",
+    alignItems: "center",
+  },
   titleInfo: {
     fontSize: 20,
+    paddingHorizontal: 4,
     fontWeight: "bold",
     marginBottom: 20,
   },
