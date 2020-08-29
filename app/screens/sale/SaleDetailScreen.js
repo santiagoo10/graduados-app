@@ -19,6 +19,8 @@ export default function SaleDetail(props) {
     user ? setUserLogged(true) : setUserLogged(false);
   });
 
+  console.log("sale: ", sale);
+
   useEffect(() => {
     const arrayUrls = [];
     (async () => {
@@ -51,9 +53,9 @@ export default function SaleDetail(props) {
       />
       <TitleSale name={sale.name} description={sale.description} />
       <InfoSale
-        location={sale.location}
-        name={sale.name}
+        store={sale.store}
         address={sale.address}
+        location={sale.location}
       />
     </ScrollView>
   );
@@ -72,7 +74,7 @@ function TitleSale(props) {
 }
 
 function InfoSale(props) {
-  const { location, name, address } = props;
+  const { store, address, location } = props;
   const listInfo = [
     {
       text: address,
@@ -81,13 +83,13 @@ function InfoSale(props) {
       action: null,
     },
     {
-      text: "111 222 333",
+      text: store?.phone,
       iconName: "phone",
       iconType: "material-community",
       action: null,
     },
     {
-      text: "sgobolzico@hotmail.com",
+      text: store?.email,
       iconName: "at",
       iconType: "material-community",
       action: null,
@@ -103,10 +105,10 @@ function InfoSale(props) {
           size={24}
           iconStyle={{ marginBottom: 18 }}
         />
-        <Text style={styles.titleInfo}>Información sobre el beneficio</Text>
+        <Text style={styles.titleInfo}>{store?.name}</Text>
       </View>
 
-      <Map location={location} name={name} height={100} />
+      <Map location={location} name={store?.name} height={100} />
       {listInfo.map((item, index) => (
         <ListItem
           key={index}
