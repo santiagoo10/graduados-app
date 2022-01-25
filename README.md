@@ -1,6 +1,6 @@
 # Graduados App
 
-App Mobile de beneficios para graduados de la UNL
+Aplicación Mobile de beneficios para graduados de la UNL
 
 ## Users
 
