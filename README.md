@@ -14,3 +14,12 @@ App Mobile de beneficios para graduados de la UNL
   yarn global add expo-cli
 - instalar andriod studio (solo para emulador ANDROID)
 - instalar xCode (solo para emulador iOS)
+
+## Install
+```
+npm install -g expo-cli
+````
+
+````
+yarn start
+````
