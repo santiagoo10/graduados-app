@@ -29,7 +29,8 @@
       "permissions": [
         "CAMERA_ROLL",
         "LOCATION"
-      ]
+      ],
+      "package": "com.santiagoo.graduadosapp"
     },
     "description": "Beneficios para graduados de la UNL"
   }
