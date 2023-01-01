@@ -21,5 +21,9 @@ npm install -g expo-cli
 ````
 
 ````
+npm install //into project
+````
+
+````
 yarn start
 ````
