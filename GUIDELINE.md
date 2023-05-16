@@ -21,7 +21,7 @@ yarn add @react-navigation/bottom-tabs
 
 ##Firebase
 
-- creamos un proyecto , vamos a utilizar
+- creamos un proyecto, vamos a utilizar
   - Authentication : para manejo de usuarios.
   - Batabase : para almacen de datos.
   - Storage : para archivos/imagenes.
